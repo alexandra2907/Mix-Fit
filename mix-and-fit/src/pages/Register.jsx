@@ -1,13 +1,32 @@
 import { useState } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
+
+function friendlyError(code) {
+  if (code === "auth/email-already-in-use") return "This email already has an account.";
+  if (code === "auth/weak-password") return "Password must have at least 6 characters.";
+  if (code === "auth/invalid-email") return "This email address is not valid.";
+  return "Something went wrong (" + code + ").";
+}
 
 function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Register clicked:", username, email);
+    setError("");
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(result.user, { displayName: username });
+      navigate("/");
+    } catch (err) {
+      setError(friendlyError(err.code));
+    }
   }
 
   return (
@@ -19,6 +38,7 @@ function Register() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
         />
         <br />
         <input
@@ -26,6 +46,7 @@ function Register() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <br />
         <input
@@ -33,10 +54,15 @@ function Register() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <br />
         <button type="submit">Register</button>
       </form>
+      {error && <p>{error}</p>}
+      <p>
+        Already have an account? <Link to="/login">Log in</Link>
+      </p>
     </div>
   );
 }
