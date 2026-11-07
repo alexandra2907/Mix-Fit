@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./AuthContext";
+import Layout from "./components/Layout";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -20,20 +21,15 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route
-            path="/"
             element={
               <ProtectedRoute>
-                <Home />
+                <Layout />
               </ProtectedRoute>
             }
-          />
-          <Route path="/closet"
-            element={
-              <ProtectedRoute>
-                <Closet />
-              </ProtectedRoute>
-            }
-          />
+          >
+            <Route path="/" element={<Home />} />
+            <Route path="/closet" element={<Closet />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

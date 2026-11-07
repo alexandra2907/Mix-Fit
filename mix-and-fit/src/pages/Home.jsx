@@ -1,17 +1,14 @@
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
-import { useAuth } from "../AuthContext";
 import { Link } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 function Home() {
   const { user } = useAuth();
 
   return (
-    <div>
-      <h1>Mix & Fit</h1>
-      <p>Welcome, {user.displayName || user.email}!</p>
-      <p><Link to="/closet">My closet</Link></p>
-      <button onClick={() => signOut(auth)}>Log out</button>
+    <div className="card hero">
+      <h1>Welcome, {user.displayName || user.email}!</h1>
+      <p className="muted">Build your digital closet and mix outfits you love.</p>
+      <Link to="/closet" className="btn">Open my closet</Link>
     </div>
   );
 }

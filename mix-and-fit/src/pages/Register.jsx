@@ -29,40 +29,40 @@ function Register() {
     }
   }
 
-  return (
-    <div>
-      <h1>Create your account</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <br />
-        <button type="submit">Register</button>
-      </form>
-      {error && <p>{error}</p>}
-      <p>
-        Already have an account? <Link to="/login">Log in</Link>
-      </p>
+    return (
+    <div className="auth-page">
+      <div className="card auth-card">
+        <h1>Create your account</h1>
+        <p className="muted center">Start building your digital closet.</p>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" className="btn-full">Register</button>
+        </form>
+        {error && <p className="error">{error}</p>}
+        <p className="muted center spaced">
+          Already have an account? <Link to="/login">Log in</Link>
+        </p>
+      </div>
     </div>
   );
 }

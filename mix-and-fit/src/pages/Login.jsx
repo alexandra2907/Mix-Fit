@@ -30,33 +30,36 @@ function Login() {
     }
   }
 
-  return (
-    <div>
-      <h1>Log in</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <br />
-        <button type="submit">Log in</button>
-      </form>
-      <button onClick={handleGoogle}>Continue with Google</button>
-      {error && <p>{error}</p>}
-      <p>
-        No account yet? <Link to="/register">Register</Link>
-      </p>
+    return (
+    <div className="auth-page">
+      <div className="card auth-card">
+        <h1>Welcome back</h1>
+        <p className="muted center">Log in to your closet.</p>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" className="btn-full">Log in</button>
+        </form>
+        <button type="button" className="btn-ghost btn-full spaced" onClick={handleGoogle}>
+          Continue with Google
+        </button>
+        {error && <p className="error">{error}</p>}
+        <p className="muted center spaced">
+          No account yet? <Link to="/register">Register</Link>
+        </p>
+      </div>
     </div>
   );
 }

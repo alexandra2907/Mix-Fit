@@ -62,50 +62,64 @@ function Closet() {
     }
   }
 
-  return (
+    return (
     <div>
       <h1>My closet</h1>
 
-      <form onSubmit={handleAdd}>
-        <input
-          type="text"
-          placeholder="Item name (e.g. Pink blazer)"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <br />
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
+      <div className="card">
+        <form onSubmit={handleAdd} className="form-row">
+          <input
+            type="text"
+            placeholder="Item name (e.g. Pink blazer)"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            {CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Price paid (optional)"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+          <button type="submit">Add item</button>
+        </form>
+      </div>
+
+      {error && <p className="error">{error}</p>}
+
+      {items.length === 0 ? (
+        <p className="empty">Your closet is empty. Add your first item above.</p>
+      ) : (
+        <div className="grid">
+          {items.map((item) => (
+            <div className="card item-card" key={item.id}>
+              <div className="item-photo">{item.name.charAt(0).toUpperCase()}</div>
+              <div className="item-body">
+                <h3>{item.name}</h3>
+                <span className="tag">{item.category}</span>
+                {item.price !== null && item.price !== undefined && (
+                  <p className="price">{item.price}</p>
+                )}
+                <button
+                  className="btn-ghost btn-small"
+                  onClick={() => handleDelete(item.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           ))}
-        </select>
-        <br />
-        <input
-          type="number"
-          min="0"
-          step="0.01"
-          placeholder="Price paid (optional)"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <br />
-        <button type="submit">Add item</button>
-      </form>
-
-      {error && <p>{error}</p>}
-
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            {item.name} ({item.category})
-            {item.price !== null && item.price !== undefined && " - " + item.price}
-            <button onClick={() => handleDelete(item.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+        </div>
+      )}
     </div>
   );
 }
