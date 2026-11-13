@@ -22,3 +22,8 @@ export async function uploadImage(file) {
 export function thumbnail(url) {
   return url.replace("/upload/", "/upload/w_400,q_auto,f_auto/");
 }
+
+// Opens Google Lens with a photo that is already online
+export function lensUrl(url) {
+  return "https://lens.google.com/uploadbyurl?url=" + encodeURIComponent(url);
+}

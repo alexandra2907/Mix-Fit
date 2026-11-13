@@ -270,3 +270,49 @@ button:hover, a.btn:hover {
     margin-bottom: 4px;
   }
 }
+
+
+.photo-actions,
+.item-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.item-actions {
+  margin-top: 10px;
+}
+
+.camera-box {
+  margin-top: 8px;
+}
+
+.camera-video {
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--radius);
+  background: #000;
+  display: block;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.photo-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.photo-preview img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}

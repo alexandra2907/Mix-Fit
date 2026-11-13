@@ -11,10 +11,10 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../AuthContext";
-import { uploadImage, thumbnail } from "../cloudinary";
+import { uploadImage, thumbnail, lensUrl } from "../cloudinary";
+import PhotoPicker from "../components/PhotoPicker";
 
 const CATEGORIES = ["Tops", "Bottoms", "Dresses", "Outerwear", "Shoes", "Accessories"];
-const MAX_MB = 5;
 
 function Closet() {
   const { user } = useAuth();
@@ -23,7 +23,6 @@ function Closet() {
   const [category, setCategory] = useState(CATEGORIES[0]);
   const [price, setPrice] = useState("");
   const [file, setFile] = useState(null);
-  const [fileKey, setFileKey] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
@@ -40,28 +39,6 @@ function Closet() {
     );
     return unsubscribe;
   }, [user.uid]);
-
-  function handleFileChange(event) {
-    const chosen = event.target.files[0];
-    setError("");
-    if (!chosen) {
-      setFile(null);
-      return;
-    }
-    if (!chosen.type.startsWith("image/")) {
-      setError("Please choose an image file.");
-      setFile(null);
-      setFileKey(fileKey + 1);
-      return;
-    }
-    if (chosen.size > MAX_MB * 1024 * 1024) {
-      setError("The photo is too big (maximum " + MAX_MB + " MB).");
-      setFile(null);
-      setFileKey(fileKey + 1);
-      return;
-    }
-    setFile(chosen);
-  }
 
   async function handleAdd(event) {
     event.preventDefault();
@@ -83,7 +60,6 @@ function Closet() {
       setName("");
       setPrice("");
       setFile(null);
-      setFileKey(fileKey + 1);
     } catch (err) {
       setError("Could not save the item: " + (err.message || err.code));
     } finally {
@@ -133,13 +109,7 @@ function Closet() {
             </button>
           </div>
           <div className="spaced">
-            <label className="muted">Photo (optional, max {MAX_MB} MB)</label>
-            <input
-              key={fileKey}
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
+            <PhotoPicker file={file} onChange={setFile} onError={setError} />
           </div>
         </form>
       </div>
@@ -167,12 +137,24 @@ function Closet() {
                 {item.price !== null && item.price !== undefined && (
                   <p className="price">{item.price}</p>
                 )}
-                <button
-                  className="btn-ghost btn-small"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </button>
+                <div className="item-actions">
+                  {item.imageURL && (
+                    <button
+                      className="btn-ghost btn-small"
+                      onClick={() =>
+                        window.open(lensUrl(item.imageURL), "_blank", "noopener")
+                      }
+                    >
+                      Find online
+                    </button>
+                  )}
+                  <button
+                    className="btn-ghost btn-small"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
