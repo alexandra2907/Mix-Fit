@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import { sendWelcomeEmail } from "../email";
 
 function friendlyError(code) {
   if (code === "auth/email-already-in-use") return "This email already has an account.";
@@ -23,13 +28,26 @@ function Register() {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(result.user, { displayName: username });
+
+      try {
+        await sendEmailVerification(result.user);
+      } catch (e) {
+        // the account exists, so don't block registration if this email fails
+      }
+
+      try {
+        await sendWelcomeEmail(username, email);
+      } catch (e) {
+        // the welcome email is a bonus, so don't block registration if it fails
+      }
+
       navigate("/");
     } catch (err) {
       setError(friendlyError(err.code));
     }
   }
 
-    return (
+  return (
     <div className="auth-page">
       <div className="card auth-card">
         <h1>Create your account</h1>

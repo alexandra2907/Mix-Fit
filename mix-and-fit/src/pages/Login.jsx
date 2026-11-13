@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, getAdditionalUserInfo } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, googleProvider } from "../firebase";
+import { sendWelcomeEmail } from "../email";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -20,15 +21,23 @@ function Login() {
     }
   }
 
-  async function handleGoogle() {
-    setError("");
-    try {
-      await signInWithPopup(auth, googleProvider);
-      navigate("/");
-    } catch (err) {
-      setError("Google login failed (" + err.code + ").");
-    }
-  }
+     async function handleGoogle() {
+     setError("");
+     try {
+       const result = await signInWithPopup(auth, googleProvider);
+       const info = getAdditionalUserInfo(result);
+       if (info && info.isNewUser) {
+         try {
+           await sendWelcomeEmail(result.user.displayName || "there", result.user.email);
+         } catch (e) {
+           // ignore: bonus email
+         }
+       }
+       navigate("/");
+     } catch (err) {
+       setError("Google login failed (" + err.code + ").");
+     }
+   }
 
     return (
     <div className="auth-page">
@@ -56,6 +65,9 @@ function Login() {
           Continue with Google
         </button>
         {error && <p className="error">{error}</p>}
+        <p className="muted center spaced">
+          <Link to="/forgot-password">Forgot your password?</Link>
+        </p>
         <p className="muted center spaced">
           No account yet? <Link to="/register">Register</Link>
         </p>

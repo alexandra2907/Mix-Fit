@@ -380,3 +380,21 @@ button:hover, a.btn:hover {
   font-size: 0.8rem;
   margin: 4px 0;
 }
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 24px;
+  background: var(--soft);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.notice {
+  background: #e8f6ee;
+  color: #1d6b43;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin: 12px 0;
+}
