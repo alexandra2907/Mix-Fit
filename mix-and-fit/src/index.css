@@ -316,3 +316,67 @@ button:hover, a.btn:hover {
   border-radius: 10px;
   border: 1px solid var(--border);
 }
+
+
+
+.form-row2 {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-row2 select {
+  width: auto;
+  min-width: 240px;
+  margin-bottom: 0;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.check input {
+  width: auto;
+  margin: 0;
+}
+
+.summary {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding: 16px 24px;
+}
+
+.summary div {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary strong {
+  font-size: 1.3rem;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.price-edit {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 6px 0;
+  flex-wrap: wrap;
+}
+
+.price-edit input {
+  width: 90px;
+  margin-bottom: 0;
+  padding: 6px 8px;
+}
+
+.source {
+  font-size: 0.8rem;
+  margin: 4px 0;
+}
